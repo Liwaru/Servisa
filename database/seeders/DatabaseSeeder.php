@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         ] as $account) {
             User::firstOrCreate(
                 ['username' => $account['username']],
-                $account + ['password' => 'password', 'status_akun' => 'aktif'],
+                $account + ['password' => $account['username'], 'status_akun' => 'aktif'],
             );
         }
 
