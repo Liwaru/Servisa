@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('layanan', function (Blueprint $table): void {
+        $this->createIfMissing('layanan', function (Blueprint $table): void {
             $table->id('id_layanan');
             $table->string('nama_layanan', 100);
             $table->text('deskripsi')->nullable();
@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('sparepart', function (Blueprint $table): void {
+        $this->createIfMissing('sparepart', function (Blueprint $table): void {
             $table->id('id_sparepart');
             $table->string('nama_sparepart', 100);
             $table->enum('jenis_kendaraan', ['motor', 'mobil', 'semua'])->default('semua');
@@ -29,7 +29,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('kendaraan', function (Blueprint $table): void {
+        $this->createIfMissing('kendaraan', function (Blueprint $table): void {
             $table->id('id_kendaraan');
             $table->foreignId('id_pelanggan')->constrained('users', 'id_user')->cascadeOnDelete();
             $table->enum('jenis_kendaraan', ['motor', 'mobil']);
@@ -41,7 +41,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('servis', function (Blueprint $table): void {
+        $this->createIfMissing('servis', function (Blueprint $table): void {
             $table->id('id_servis');
             $table->string('kode_servis', 30)->unique();
             $table->foreignId('id_pelanggan')->constrained('users', 'id_user');
@@ -62,7 +62,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('detail_servis', function (Blueprint $table): void {
+        $this->createIfMissing('detail_servis', function (Blueprint $table): void {
             $table->id('id_detail');
             $table->foreignId('id_servis')->constrained('servis', 'id_servis')->cascadeOnDelete();
             $table->foreignId('id_layanan')->nullable()->constrained('layanan', 'id_layanan')->nullOnDelete();
@@ -74,7 +74,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('penugasan_mekanik', function (Blueprint $table): void {
+        $this->createIfMissing('penugasan_mekanik', function (Blueprint $table): void {
             $table->id('id_penugasan');
             $table->foreignId('id_servis')->constrained('servis', 'id_servis')->cascadeOnDelete();
             $table->foreignId('id_mekanik')->constrained('users', 'id_user');
@@ -85,7 +85,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('riwayat_status', function (Blueprint $table): void {
+        $this->createIfMissing('riwayat_status', function (Blueprint $table): void {
             $table->id('id_riwayat');
             $table->foreignId('id_servis')->constrained('servis', 'id_servis')->cascadeOnDelete();
             $table->foreignId('id_user')->nullable()->constrained('users', 'id_user')->nullOnDelete();
@@ -94,7 +94,7 @@ return new class extends Migration
             $table->timestamp('waktu')->useCurrent();
         });
 
-        Schema::create('pembayaran', function (Blueprint $table): void {
+        $this->createIfMissing('pembayaran', function (Blueprint $table): void {
             $table->id('id_pembayaran');
             $table->foreignId('id_servis')->unique()->constrained('servis', 'id_servis')->cascadeOnDelete();
             $table->enum('metode', ['cash', 'qris', 'e_wallet']);
@@ -117,5 +117,15 @@ return new class extends Migration
         Schema::dropIfExists('kendaraan');
         Schema::dropIfExists('sparepart');
         Schema::dropIfExists('layanan');
+    }
+
+    /**
+     * Keep this migration compatible with databases imported from the old XAMPP setup.
+     */
+    private function createIfMissing(string $table, \Closure $definition): void
+    {
+        if (! Schema::hasTable($table)) {
+            Schema::create($table, $definition);
+        }
     }
 };
