@@ -21,7 +21,7 @@
                 <p>Buat akun pelanggan untuk mulai memesan layanan.</p>
             </header>
 
-            <form method="POST" action="{{ route('register.store') }}" class="login-form register-form" novalidate>
+            <form method="POST" action="{{ route('register.store') }}" class="login-form register-form" data-servisa-loader-text="Membuat akun..." novalidate>
                 @csrf
                 <div class="form-group">
                     <label for="username">Username</label>
@@ -72,6 +72,7 @@
         </div>
     </section>
 </main>
+<x-servisa-loader overlay text="Membuat akun..." />
 <script>
     document.querySelectorAll('[data-password-toggle]').forEach((toggle) => {
         const input = document.getElementById(toggle.dataset.passwordToggle);

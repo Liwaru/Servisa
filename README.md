@@ -33,14 +33,40 @@ docker compose down
 
 MySQL dapat diakses dari komputer host melalui port `3307`. Data disimpan secara permanen pada volume `servisa_mysql_data`. Untuk menghapus container tanpa menghapus database, gunakan `docker compose down` tanpa opsi `-v`.
 
-Akun demo memakai password `password`:
+Akun demo:
 
-| Username | Level |
-|---|---|
-| `pelanggan` | Pelanggan |
-| `mekanik` | Mekanik |
-| `admin` | Admin |
-| `pemilik` | Pemilik |
+| Username | Password | Level |
+|---|---|---|
+| `pelanggan` | `pelanggan` | Pelanggan |
+| `mekanik` | `mekanik` | Mekanik |
+| `admin` | `admin` | Admin |
+| `pemilik` | `pemilik` | Pemilik |
+
+## Loading Global Servisa
+
+Semua form `POST`, `PUT`, `PATCH`, dan `DELETE` otomatis menampilkan overlay serta mencegah double-submit. Teks proses dapat ditentukan pada form:
+
+```blade
+<form method="POST" data-servisa-loader-text="Menyimpan data...">
+```
+
+Loader dapat dipanggil langsung atau dipakai sebagai komponen inline:
+
+```javascript
+showServisaLoader('Mencari mekanik...');
+hideServisaLoader();
+```
+
+```blade
+<x-servisa-loader text="Memuat laporan..." />
+```
+
+Pemanggilan `fetch` otomatis memakai loader dan menyembunyikannya di `finally`. Gunakan opsi berikut untuk mengatur teks atau melewati loader pada request yang benar-benar instan:
+
+```javascript
+fetch('/api/servis', { servisaLoaderText: 'Mengirim permintaan...' });
+fetch('/api/status', { servisaLoader: false });
+```
 
 ## Struktur Container
 

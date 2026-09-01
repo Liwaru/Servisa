@@ -110,6 +110,33 @@ class AuthenticationTest extends TestCase
             ->assertSee('Daftar ke Servisa');
     }
 
+    public function test_global_servisa_loader_is_available_on_application_pages(): void
+    {
+        $this->assertFileExists(public_path('animations/wrench-loading.json'));
+        $this->assertFileExists(public_path('css/servisa-loader.css'));
+        $this->assertFileExists(public_path('js/servisa-loader.js'));
+        $this->assertIsArray(json_decode(
+            file_get_contents(public_path('animations/wrench-loading.json')),
+            true,
+            flags: JSON_THROW_ON_ERROR,
+        ));
+
+        $this->get('/login')->assertOk()
+            ->assertSee('servisa-loader-overlay')
+            ->assertSee('animations/wrench-loading.json')
+            ->assertSee('js/servisa-loader.js')
+            ->assertSee('Memverifikasi akun...');
+
+        $this->get('/register')->assertOk()
+            ->assertSee('servisa-loader-overlay')
+            ->assertSee('Membuat akun...');
+
+        $user = User::factory()->create(['level' => 1]);
+        $this->actingAs($user)->get('/dashboard/pelanggan')->assertOk()
+            ->assertSee('servisa-loader-overlay')
+            ->assertSee('Keluar dari akun...');
+    }
+
     public function test_database_can_be_seeded_with_servisa_catalog_and_demo_roles(): void
     {
         $this->seed();

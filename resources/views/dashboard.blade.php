@@ -19,10 +19,11 @@
     <span class="badge">{{ $role }}</span>
     <h1>Halo, {{ session('username') }}!</h1>
     <p>Anda berhasil masuk ke dashboard {{ strtolower($role) }} Servisa.</p>
-    <form method="POST" action="{{ route('logout') }}">
+    <form method="POST" action="{{ route('logout') }}" data-servisa-loader-text="Keluar dari akun...">
         @csrf
         <button type="submit">Logout</button>
     </form>
 </main>
+<x-servisa-loader overlay text="Memuat data..." />
 </body>
 </html>

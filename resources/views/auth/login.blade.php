@@ -31,7 +31,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('login.attempt') }}" class="login-form">
+            <form method="POST" action="{{ route('login.attempt') }}" class="login-form" data-servisa-loader-text="Memverifikasi akun...">
                 @csrf
                 <div class="form-group">
                     <label for="username">Username</label>
@@ -62,6 +62,7 @@
         </div>
     </section>
 </main>
+<x-servisa-loader overlay text="Memverifikasi akun..." />
 <script>
     const toggle = document.querySelector('[data-password-toggle]');
     const password = document.getElementById('password');

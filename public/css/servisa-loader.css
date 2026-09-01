@@ -1,0 +1,67 @@
+.servisa-loader-overlay[hidden] {
+    display: none !important;
+}
+
+.servisa-loader-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(248, 250, 252, 0.82);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+
+.servisa-loader-content,
+.servisa-loader-inline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #1f2937;
+    text-align: center;
+}
+
+.servisa-loader-content {
+    min-width: 190px;
+    padding: 20px 28px;
+    border: 1px solid rgba(15, 76, 129, 0.08);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 18px 50px rgba(15, 76, 129, 0.14);
+}
+
+.servisa-loader-animation {
+    width: clamp(90px, 10vw, 120px);
+    height: clamp(90px, 10vw, 120px);
+}
+
+.servisa-loader-animation svg {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.servisa-loader-text {
+    margin: 6px 0 0;
+    color: #1f2937;
+    font: 600 15px/1.5 Inter, Arial, sans-serif;
+}
+
+.servisa-loader-inline {
+    padding: 16px;
+}
+
+body.servisa-loader-active {
+    overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .servisa-loader-overlay {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+}
