@@ -15,12 +15,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        foreach ([
+            ['username' => 'pelanggan', 'no_hp' => '082388486205', 'level' => 1],
+            ['username' => 'mekanik', 'no_hp' => '082388486206', 'level' => 2],
+            ['username' => 'admin', 'no_hp' => '082388486207', 'level' => 3],
+            ['username' => 'pemilik', 'no_hp' => '082388486208', 'level' => 4],
+        ] as $account) {
+            User::firstOrCreate(
+                ['username' => $account['username']],
+                $account + ['password' => 'password', 'status_akun' => 'aktif'],
+            );
+        }
 
-        User::factory()->create([
-            'no_hp' => '081234567890',
-            'username' => 'pelanggan',
-            'password' => 'password',
-        ]);
+        $this->call(ServisaCatalogSeeder::class);
     }
 }

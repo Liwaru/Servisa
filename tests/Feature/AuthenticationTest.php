@@ -110,6 +110,17 @@ class AuthenticationTest extends TestCase
             ->assertSee('Daftar ke Servisa');
     }
 
+    public function test_database_can_be_seeded_with_servisa_catalog_and_demo_roles(): void
+    {
+        $this->seed();
+
+        $this->assertDatabaseCount('layanan', 14);
+        $this->assertDatabaseCount('sparepart', 15);
+        foreach ([1, 2, 3, 4] as $level) {
+            $this->assertDatabaseHas('users', ['level' => $level, 'status_akun' => 'aktif']);
+        }
+    }
+
     public function test_user_cannot_open_another_roles_dashboard(): void
     {
         $user = User::factory()->create(['level' => 1]);

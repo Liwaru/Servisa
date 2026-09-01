@@ -1,3 +1,55 @@
+# Servisa
+
+Aplikasi layanan servis kendaraan berbasis Laravel 12. Lingkungan Docker terdiri dari Nginx, PHP 8.2-FPM, dan MySQL 8.4.
+
+## Menjalankan dengan Docker
+
+Prasyarat: Docker Desktop sudah berjalan.
+
+1. Buat konfigurasi lokal:
+
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+
+2. Build dan jalankan seluruh container:
+
+   ```powershell
+   docker compose up -d --build
+   ```
+
+   Saat pertama dijalankan, container aplikasi otomatis menjalankan `composer install`, membuat `APP_KEY` bila masih kosong, menjalankan migrasi, dan mengisi data awal.
+
+3. Buka aplikasi di [http://localhost:8000](http://localhost:8000).
+
+Perintah yang berguna:
+
+```powershell
+docker compose ps
+docker compose logs -f
+docker compose exec app php artisan test
+docker compose down
+```
+
+MySQL dapat diakses dari komputer host melalui port `3307`. Data disimpan secara permanen pada volume `servisa_mysql_data`. Untuk menghapus container tanpa menghapus database, gunakan `docker compose down` tanpa opsi `-v`.
+
+Akun demo memakai password `password`:
+
+| Username | Level |
+|---|---|
+| `pelanggan` | Pelanggan |
+| `mekanik` | Mekanik |
+| `admin` | Admin |
+| `pemilik` | Pemilik |
+
+## Struktur Container
+
+- `web`: Nginx, port `8000`.
+- `app`: PHP 8.2-FPM dan Laravel.
+- `db`: MySQL 8.4, port host `3307`.
+
+---
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
